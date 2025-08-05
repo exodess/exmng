@@ -9,4 +9,5 @@ void gotoxy(int, int);
 void clrscr(void);
 void clearln(int);
 char mygetch(unsigned long);
+
 #endif

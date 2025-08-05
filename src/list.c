@@ -1,12 +1,13 @@
 #include "list.h"
 #include <stdlib.h>
-ListInfo_t * init_list(int flags)
+WindowInfo_t * init_list(int flags)
 {
-	// создается переменная, которая будет указывать на вершину списка
-	ListInfo_t * new = malloc(sizeof(ListInfo_t));
+	/* создается переменная, которая будет указывать на структуру окна */
+	WindowInfo_t * new = malloc(sizeof(WindowInfo_t));
 
 	new -> top = NULL;
 	new -> flags = flags;
+	/* добавить код получения номера файла в списке родительской директории для CENTER и  */
 	return new;
 }
 
@@ -36,11 +37,11 @@ struct dirent * peek_entry(DList_t * list, int number)
 	return &(temp -> cur_entry);
 }
 
-void delete_node(ListInfo_t * root, int number)
+void delete_node(WindowInfo_t * root, int number)
 {
 	DList_t * temp = root -> top;
 	if(number == 1) {
-		// удаление корневого элемента
+		/* удаление корневого элемента */
 		root -> top = (root -> top -> next);
 		free(temp);
 	}
@@ -61,14 +62,14 @@ void delete_node(ListInfo_t * root, int number)
 	}
 }
 
-void create_node(ListInfo_t * root, struct dirent info, int number)
+void create_node(WindowInfo_t * root, struct dirent * info, int number)
 {
 	DList_t * point = root -> top;
 	while(point -> num != number) point = point -> next;
 
 	DList_t * new = malloc(sizeof(DList_t));
 
-	new -> cur_entry = info;
+	new -> cur_entry = *info;
 	new -> next = point -> next;
 	new -> prev = point;
 	new -> num = number;

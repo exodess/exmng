@@ -38,7 +38,7 @@ void drowing_pole_file(int len_term, int height_term)
 	}
 }
 
-void drowing_pole_dir(ListInfo_t * point, int current_point, int offset, int flag)
+void drowing_pole_dir(WindowInfo_t * point, int current_point, int offset, int flag)
 {
 	int len_term = 0, height_term = 0; // размеры терминала
 	int xl; // граничные значения отображения блока по оси x

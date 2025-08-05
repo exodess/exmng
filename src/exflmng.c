@@ -26,7 +26,7 @@
 #define ENTER '\n'
 
 void downDirList(int *, int *, int, int);
-ListInfo_t * reading_dir(char *, int);
+WindowInfo_t * reading_dir(char *, int);
 void reading_and_drowing_file(char *);
 char * getPathDone(char *);
 char * getPathUp(char *, char *);
@@ -57,7 +57,7 @@ int main(void)
 	
 	strcpy(path_center, getenv("PWD"));
 	if(strcmp(path_center, "/") != 0) strcpy(path_left, getPathDone(getenv("PWD")));
-	ListInfo_t * center, * right, * left;
+	WindowInfo_t * center, * right, * left;
 
 	int cur_point = 1; // куда указывает курсор
 	int offset = 0;
@@ -121,7 +121,7 @@ int main(void)
 		}
 		
 		else if((ch == PG_RT) && right -> top != NULL){ 
-			// переход назад на папку выше
+			/* переход назад на папку выше (влево) */
 			strcpy(path_left, path_center);
 			strcpy(path_center, path_right);
 
@@ -142,7 +142,7 @@ int main(void)
 		yt += cur_point - 1;
 
 		if((ch == 'r') || (ch == 'R')) {
-			// переименование элемента (файла, папки и тд)
+			/* переименование элемента (файла, папки и тд) */
 
 			new_name = rename_element(name_cur, path_center, len_term, yt);
 			if(new_name != NULL && strlen(new_name) > 0){
@@ -152,16 +152,16 @@ int main(void)
 		}
 		
 		else if(ch == 'n') {
-			// добавление нового файла
+			/* добавление нового файла */
 			struct dirent newFileInfo;
 			newFileInfo.d_type = TYPE_FILE;
 			strcpy(newFileInfo.d_name, "file");
 			char * path_temp = malloc(256 * sizeof(char));
 			strcpy(path_temp, path_center);
 			path_temp = getPathUp(path_temp, "file");
-			fclose(fopen(path_temp, "w")); // создаем файл
+			fclose(fopen(path_temp, "w")); /* создаем файл */
 
-			create_node(center, newFileInfo, cur_point + offset);
+			create_node(center, &newFileInfo, cur_point + offset);
 			
 			downDirList(&cur_point, &offset, height_term, count);
 			drowing_pole_dir(center, cur_point, offset, CENTER);
@@ -378,13 +378,13 @@ int isRootDir(char * path)
 	return (strcmp(path, "/") == 0);
 }
 
-ListInfo_t * reading_dir(char * dirname, int flag)
+WindowInfo_t * reading_dir(char * dirname, int flag)
 {
 	if(dirname == NULL) return NULL;
 	
 	struct dirent * entry = NULL;
 	int num = 1;
-	ListInfo_t * point = init_list(flag);
+	WindowInfo_t * point = init_list(flag);
 	DList_t * list = point -> top;
 	
 	DIR * cur_dir = opendir(dirname);

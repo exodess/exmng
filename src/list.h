@@ -3,28 +3,52 @@
 
 #include <dirent.h>
 
+/* Общее положение о том, как хранятся данные о файлах в памяти:
+
+	Утилита exmng делит экран консоли на 3 части, выводя в каждой из них 
+	Каталог родителя (LEFT), Текущий каталог (CENTER), Каталог ребенка (RIGHT) 
+	(если смотреть слева направо)
+
+	Информация о каждом "окне" хранится в WindowInfo_t 
+	В этой структуре хранится положение окна (слева, в центре или справа) и данные о файлах
+
+	Информация о файлах в окне, которые должны выводиться на экран, находится в DList_t
+	Эта структура представлена двухсвязным списком, указатель на элемент в которой означает, что на данный файл указывает курсор
+	Она содержит в себе структуру dirent, определенную в <dirent.h>, а также номер файла в списке
+	
+	*/
+
+/* Стуктура, содержащая информацию о файлах в окне */
 typedef struct dir_list {
-	struct dirent cur_entry;
-	struct dir_list * next;
-	struct dir_list * prev; 
-	int num; // номер в списке
+	struct dirent cur_entry; /* информация о текущем файле */
+	struct dir_list * next;  /* указатель на элемент ниже  */
+	struct dir_list * prev;  /* указатель на элемент выше  */
+	int num;                 /* номер файла в списке       */
 } DList_t; 
 
+/* Структура, содержащая информация о данном окне */
 typedef struct {
-	DList_t * top;
+	DList_t * top; /* указатель на список файлов */
 	enum {
 		LEFT,
 		CENTER,
 		RIGHT
-	} flags;
-} ListInfo_t; 
+	} flags; /* Расположение на экране 
+	            Активно всегда только окно CENTER! */
+	int num; /* 
+	            номер файла, на который указывает курсор в данном окне
+	            необходимо для того, чтобы после возвращения в данную директорию курсор указывал на папку,
+	            из которой пользователь вышел
+	         */
+} WindowInfo_t; 
 
-ListInfo_t * init_list(int); 	// создание нового списка 		DList_t * top = init_list();
-DList_t * push_entry(DList_t * list, struct dirent * entry, int number);	// добавляем новый файл в список 
-struct dirent * peek_entry(DList_t * list, int num); // получение необходимого файла по его номеру (координата курсора)
-void create_node(ListInfo_t *, struct dirent, int);
-void delete_node(ListInfo_t * , int);
-void destroy_list(DList_t * ); 	// удаление списка
-int count_nodes(DList_t * list);
+WindowInfo_t * init_list(int);                                           /* создание нового списка */
+DList_t * push_entry(DList_t * list, struct dirent * entry, int number); /* добавляем новый файл в список */ 
+struct dirent * peek_entry(DList_t * list, int num);                     /* получение информации о необходимом файле
+                                                                             по его номеру (координата курсора) */
+void create_node(WindowInfo_t *, struct dirent *, int);
+void delete_node(WindowInfo_t *, int);
+void destroy_list(DList_t *);                                            /* удаление окна */
+int count_nodes(DList_t *); 
 
 #endif

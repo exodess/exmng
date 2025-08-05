@@ -1,7 +1,7 @@
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror -c 
 
-all: build
+all: build clean
 
 build: exflmng.o list.o term_settings.o drowing.o
 	$(CC) exflmng.o list.o term_settings.o drowing.o  -o ~/exmng
@@ -18,3 +18,5 @@ term_settings.o : src/term_settings.c
 drowing.o : src/drowing.c
 	$(CC) $(CFLAGS) src/drowing.c
 
+clean: 
+	rm -rf *.o

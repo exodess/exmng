@@ -8,7 +8,7 @@
 #define BLUE "\033[94m"
 #define ORANGE "\033[33m" 
 #define RED_FRONT "\033[101m"
-#define BLUE_FRONT "\033[46m" // темно-голубой
+#define BLUE_FRONT "\033[46m" /* темно-голубой */
 #define ORANGE_FRONT "\033[103m"
 #define GREY_FRONT "\033[100m"
 #define WHITE_FRONT "\033[107m"

@@ -4,7 +4,8 @@ CFLAGS = -Wall -Wextra -Werror -c
 all: build
 
 build: exflmng.o list.o term_settings.o drowing.o
-	$(CC) exflmng.o list.o term_settings.o drowing.o  -o ~/exmng
+	$(CC) exflmng.o list.o term_settings.o drowing.o  -o exmng
+	./exmng
 
 exflmng.o: src/exflmng.c
 	$(CC) $(CFLAGS) src/exflmng.c
@@ -18,3 +19,5 @@ term_settings.o : src/term_settings.c
 drowing.o : src/drowing.c
 	$(CC) $(CFLAGS) src/drowing.c
 
+clean:
+	rm -rf *.o

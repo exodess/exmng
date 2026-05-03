@@ -42,6 +42,7 @@ When you run the `exmng` utility, you are greeted with the directory you are cur
 
 - The *'<ESC>'* key is used to exit the various menus
 
+![Image](images/screenshot1.png)
 
 ## Useful data
 
